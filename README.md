@@ -46,6 +46,8 @@ The project is still in development and it can't display properly shapes, colors
 npm install
 ```
 
+Remember to set CI_PROJECT_NAME environment variable for production build.
+
 <br/>
 
 ### Compiles and hot-reloads for development

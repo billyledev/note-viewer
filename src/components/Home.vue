@@ -229,7 +229,7 @@ export default {
   },
   async created() {
     // Create a worker to load and request the databases
-    this.worker = new Worker('/worker.sql-wasm.js');
+    this.worker = new Worker(`${process.env.BASE_URL}worker.sql-wasm.js`);
 
     // Process the worker messages
     this.worker.onmessage = (event) => {
