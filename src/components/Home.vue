@@ -147,20 +147,38 @@ export default {
         });
       }
     },
-    parseShapeModel(lines) {
+    parseShapeModel(data) {
+      // Get the indexes of the interesting values
+      const pageIdIndex = data.columns.indexOf('pageUniqueId');
+      const colorIndex = data.columns.indexOf('color');
+      const thicknessIndex = data.columns.indexOf('thickness');
+      const pointsIndex = data.columns.indexOf('points');
+      const typeIndex = data.columns.indexOf('shapeType');
+
+      // Get the values
+      const lines = data.values;
+      // Create an object to store the pages
       const pages = {};
 
       // Fill the pages with the points informations
       for (let i = 0; i < lines.length; i++) {
-        const pageId = lines[i][5];
+        const pageId = lines[i][pageIdIndex];
 
         if (!pages[pageId]) { // Create the page if it doesn't exists
           pages[pageId] = {};
-          pages[pageId].lines = [];
+          pages[pageId].shapes = [];
         }
 
-        // Push the points data for the page
-        pages[pageId].lines.push(lines[i][13]);
+        // Convert the color to hex and keep only the RGB part
+        const color = (lines[i][colorIndex] >>> 0).toString(16).substring(2);
+
+        // Push the color, thickness, type and points list of each shape for the corresponding page
+        pages[pageId].shapes.push({
+          color,
+          thickness: lines[i][thicknessIndex],
+          points: lines[i][pointsIndex],
+          type: lines[i][typeIndex],
+        });
       }
 
       this.pages = pages;
@@ -258,8 +276,7 @@ export default {
           break;
         }
         case 'loadShapeModel': { // A note database has been read
-          const lines = data.results[0].values;
-          this.parseShapeModel(lines);
+          this.parseShapeModel(data.results[0]);
           break;
         }
         default: {
