@@ -227,19 +227,92 @@ export default {
       // Clear the canvas
       this.ctx.clearRect(0, 0, this.width, this.height);
 
-      for (let i = 0; i < page.lines.length; i++) {
-        const lineData = page.lines[i];
-        const dataView = new DataView(lineData.buffer);
-        const points = lineData.length / 24; // The number of points to read
+      for (let i = 0; i < page.shapes.length; i++) {
+        const shapeData = page.shapes[i];
+        const dataView = new DataView(shapeData.points.buffer);
 
-        // Process the points
-        for (let j = 0; j < points; j++) {
-          // Read the point informations
-          const vals = this.getValues(dataView, j * 24);
+        // Set the shape color
+        this.ctx.strokeStyle = `#${shapeData.color}`;
+        // Set the shape thickness
+        this.ctx.lineWidth = shapeData.thickness;
 
-          // Draw the point
+        // If the shape is a circle, a rectangle, a line or a triangle
+        if ([0, 1, 7, 8].indexOf(shapeData.type) !== -1) {
+          const p1 = this.getValues(dataView, 0);
+          const p2 = this.getValues(dataView, 24);
+          const projectedP1 = {
+            x: this.width * p1.x,
+            y: this.height * p1.y,
+          };
+          const projectedP2 = {
+            x: this.width * p2.x,
+            y: this.height * p2.y,
+          };
+
+          switch (shapeData.type) {
+            case 0: { // Circle
+              // The circle is inside a square, so width = height
+              const width = projectedP2.x - projectedP1.x;
+              const center = {
+                x: projectedP2.x - (width / 2),
+                y: projectedP2.y - (width / 2),
+              };
+              const radius = Math.abs(width / 2);
+
+              this.ctx.beginPath();
+              this.ctx.arc(center.x, center.y, radius, 0, 2 * Math.PI, true);
+              this.ctx.stroke();
+              break;
+            }
+            case 1: { // Rectangle
+              const width = projectedP2.x - projectedP1.x;
+              const height = projectedP2.y - projectedP1.y;
+
+              this.ctx.strokeRect(projectedP1.x, projectedP1.y, width, height);
+              break;
+            }
+            case 7: { // Line
+              this.ctx.beginPath();
+              this.ctx.moveTo(projectedP1.x, projectedP1.y);
+              this.ctx.lineTo(projectedP2.x, projectedP2.y);
+              this.ctx.stroke();
+              break;
+            }
+            case 8: { // Triangle
+              const halfWidth = projectedP1.x - projectedP2.x;
+              const projectedP3 = {
+                x: projectedP2.x + halfWidth * 2,
+                y: projectedP2.y,
+              };
+
+              this.ctx.beginPath();
+              this.ctx.moveTo(projectedP1.x, projectedP1.y);
+              this.ctx.lineTo(projectedP2.x, projectedP2.y);
+              this.ctx.lineTo(projectedP3.x, projectedP3.y);
+              this.ctx.closePath();
+              this.ctx.stroke();
+              break;
+            }
+            default: {
+              break;
+            }
+          }
+        } else { // The shape is a stroke
+          const points = shapeData.points.length / 24; // The number of points to read
+
+          // Process the points
           this.ctx.beginPath();
-          this.ctx.arc(this.width * vals.x, this.height * vals.y, 1, 0, 2 * Math.PI, true);
+          for (let j = 0; j < points; j++) {
+            // Read the point informations
+            const vals = this.getValues(dataView, j * 24);
+
+            // Draw the point
+            if (j === 0) {
+              this.ctx.moveTo(this.width * vals.x, this.height * vals.y);
+            } else {
+              this.ctx.lineTo(this.width * vals.x, this.height * vals.y);
+            }
+          }
           this.ctx.stroke();
         }
       }
