@@ -21,5 +21,6 @@ module.exports = {
       'error',
       { 'allowForLoopAfterthoughts': true },
     ],
+    'no-bitwise': 'off',
   },
 };
