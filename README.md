@@ -45,7 +45,7 @@ You will also find the current page and the number of pages at the bottom of the
 
 ## Limitations
 
-The project is still in development and it can't display properly shapes, colors and stroke size.
+The project is still in development and some functionalities might be missing.
 
 <br/>
 <br/>
