@@ -11,6 +11,15 @@ Linting is done with ESLint using the AirBnB style.
 <br/>
 <br/>
 
+## News
+
+Added support for circles, rectangles, triangles, lines, colors and thicknesses!  
+
+![Shape update image](https://artania06.github.io/note-viewer/shapeUpdate.jpg)
+
+<br/>
+<br/>
+
 ## How to use
 
 First, click on the file icon to open the backup selection window. You can then select your notes backup (*.zip format).  
