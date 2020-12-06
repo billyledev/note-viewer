@@ -250,17 +250,18 @@ export default {
           };
 
           switch (shapeData.type) {
-            case 0: { // Circle
-              // The circle is inside a square, so width = height
+            case 0: { // Circles and ellipses
               const width = projectedP2.x - projectedP1.x;
+              const height = projectedP2.y - projectedP1.y;
               const center = {
                 x: projectedP2.x - (width / 2),
-                y: projectedP2.y - (width / 2),
+                y: projectedP2.y - (height / 2),
               };
-              const radius = Math.abs(width / 2);
+              const radiusX = Math.abs(width / 2);
+              const radiusY = Math.abs(height / 2);
 
               this.ctx.beginPath();
-              this.ctx.arc(center.x, center.y, radius, 0, 2 * Math.PI, true);
+              this.ctx.ellipse(center.x, center.y, radiusX, radiusY, 0, 0, 2 * Math.PI);
               this.ctx.stroke();
               break;
             }
