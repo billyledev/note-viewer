@@ -15,11 +15,11 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-shadow': [
       'error',
-      { 'allow': ['state', 'getters'] },
+      { allow: ['state', 'getters'] },
     ],
     'no-plusplus': [
       'error',
-      { 'allowForLoopAfterthoughts': true },
+      { allowForLoopAfterthoughts: true },
     ],
     'no-bitwise': 'off',
   },

@@ -52,7 +52,7 @@ The project is still in development and some functionalities might be missing.
 
 ## Project setup
 ```
-npm install
+yarn install
 ```
 
 Remember to set CI_PROJECT_NAME environment variable for production build.
@@ -61,15 +61,15 @@ Remember to set CI_PROJECT_NAME environment variable for production build.
 
 ### Compiles and hot-reloads for development
 ```
-npm run serve
+yarn serve
 ```
 
 ### Compiles and minifies for production
 ```
-npm run build
+yarn build
 ```
 
 ### Lints and fixes files
 ```
-npm run lint
+yarn lint
 ```
