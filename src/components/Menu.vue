@@ -14,11 +14,11 @@
       <!-- Remaining folders and notes -->
       <template v-for="item in notesItems">
         <!-- Folder names -->
-        <ons-list-header v-if="item.folder" :key="item.id">
+        <ons-list-header v-if="item.folder" :key="`folder-${item.id}`">
           {{ item.title }}
         </ons-list-header>
         <!-- Notes names -->
-        <ons-list-item v-else :key="item.id"
+        <ons-list-item v-else :key="`note-${item.id}`"
           modifier="chevron" tappable
           @click="selectNote(item.id)"
         >
@@ -33,7 +33,7 @@
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
-  name: 'Menu',
+  name: 'MenuView',
   computed: {
     ...mapGetters('loader', ['notesItems', 'rootNotes']),
   },

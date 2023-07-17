@@ -1,8 +1,9 @@
 <template id="home-page">
   <v-ons-page>
     <!-- Used to choose the backup file -->
+    <!-- eslint-disable-next-line vuejs-accessibility/form-control-has-label -->
     <input id="file-input" type="file" name="name"
-      accept="application/zip" style="display: none;"/>
+      accept="application/zip" style="display: none;" label=""/>
 
     <toolbar v-bind="toolbarInfo"></toolbar>
 
@@ -58,7 +59,7 @@ import { mapState, mapActions } from 'vuex';
 import Toolbar from './Toolbar.vue';
 
 export default {
-  name: 'Home',
+  name: 'HomeView',
   components: {
     Toolbar,
   },
